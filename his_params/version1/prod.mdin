@@ -1,0 +1,11 @@
+Production of his
+ &cntrl
+  imin=0, nstlim=10000000, dt=0.002, 
+  irest=0, ntx=1, ig=-1, 
+  tempi=300, temp0=300, 
+  ntc=2, ntf=2, tol = 0.00001,
+  ntwx=500, ntwe=500, ntwr=10000000, ntpr=500, 
+  cut=999.0, iwrap=0, 
+  ntt=3, gamma_ln=1.0,
+  iphmd=1, igb=8, solvph=7.0, saltcon=0.15,
+/

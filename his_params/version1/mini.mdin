@@ -1,0 +1,10 @@
+Solvated minimization
+&cntrl                                         ! cntrl is a name list, it stores all conrol parameters for amber
+  imin = 1, maxcyc = 5000, ncyc = 1000 ! Do minimization, max number of steps (Run both SD and Conjugate Gradient), first 250 steps are SD
+  ntx = 1,                                     ! Initial coordinates
+  ntwe = 0, ntwr = 500, ntpr = 500,        ! Print frq for energy and temp to mden file, write frq for restart trj, print frq for energy to mdout 
+  ntc = 1, ntf = 1,                            ! Shake (1 = No Shake), Force Eval. (1 = complete interaction is calced), Use PBC (1 = const. vol.), Use Const. Press. (0 = no press. scaling)
+  cut = 999.0,                               ! Nonbond cutoff (Ang.)
+  igb = 8,                                     ! Use GBNeck2
+  ioutfm = 1, ntxo = 2,                        ! Fomrat of coor. and vel. trj files, write NetCDF restrt fuile for final coor., vel., and box size
+/

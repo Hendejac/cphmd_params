@@ -1,0 +1,9 @@
+A0	-75.048201
+B0	0.459660
+A1	-78.608200
+B1	0.487455
+A10	-63.909199
+B10	0.529090
+
+Copy and paste the following line to the corresponding His line in a CpHMD parm file:
+-75.048201,0.459660,-78.608200,0.487455,-63.909199,0.529090,

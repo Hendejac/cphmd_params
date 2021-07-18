@@ -1,0 +1,2 @@
+rm prod* 
+rm phmdstrt* 

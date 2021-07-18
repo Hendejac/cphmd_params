@@ -1,0 +1,9 @@
+Fitting with formula: du/dthetax = 2*A10*sin(2*thetax)*(sin(thetax)^2-B10)
+Fitted results:
+               A10 = -63.90920
+               B10 = 0.52909
+Fitted errors:
+           A10_err = 1.00850
+           B10_err = 0.00398
+R squared: 0.877441
+RMSE: 7.925758

@@ -1,0 +1,9 @@
+Fitting with formula: du/dtheta = 2*A0*sin(2*theta)*(sin(theta)^2-B0)
+Fitted results:
+               A0 = -75.04820
+               B0 = 0.45966
+Fitted errors:
+           A0_err = 1.00850
+           B0_err = 0.00340
+R squared: 0.866097
+RMSE: 9.734290

@@ -1,0 +1,1084 @@
+
+          -------------------------------------------------------
+          Amber 16 PMEMD                              2016
+          -------------------------------------------------------
+
+| PMEMD implementation of SANDER, Release 16
+
+| Run on 02/16/2021 at 10:47:01
+
+|   Executable path: /home/jackh/Software/amber_dev_gpu/bin/pmemd.cuda
+| Working directory: /home/jackh/his_params/version2
+|          Hostname: Unknown
+  [-O]verwriting output
+
+File Assignments:
+|   MDIN: prod.mdin                                                             
+|  MDOUT: prod_1.2_0.0.mdout                                                    
+| INPCRD: mini.rst7                                                             
+|   PARM: his.parm7                                                             
+| RESTRT: prod_1.2_0.0.rst7                                                     
+|   REFC: refc                                                                  
+|  MDVEL: mdvel                                                                 
+|   MDEN: mden                                                                  
+|  MDCRD: mdcrd                                                                 
+| MDINFO: mdinfo                                                                
+|  MDFRC: mdfrc                                                                 
+
+
+ Here is the input file:
+
+Production of his                                                              
+ &cntrl                                                                        
+  imin=0, nstlim=50000, dt=0.002,                                              
+  irest=0, ntx=1, ig=-1,                                                       
+  tempi=300, temp0=300,                                                        
+  ntc=2, ntf=2, tol = 0.00001,                                                 
+  ntwx=500, ntwe=500, ntwr=50000, ntpr=500,                                    
+  cut=999.0, iwrap=0,                                                          
+  ntt=3, gamma_ln=1.0,                                                         
+  iphmd=1, igb=8, solvph=7.0, saltcon=0.15,                                    
+/                                                                              
+
+
+Note: ig = -1. Setting random seed to   439928 based on wallclock time in 
+      microseconds.
+| irandom = 1, using AMBER's internal random number generator (default).
+ 
+|--------------------- INFORMATION ----------------------
+| GPU (CUDA) Version of PMEMD in use: NVIDIA GPU IN USE.
+|                    Version 16.0.0
+| 
+|                      02/25/2016
+| 
+| Implementation by:
+|                    Ross C. Walker     (SDSC)
+|                    Scott Le Grand     (nVIDIA)
+| 
+| Precision model in use:
+|      [SPFP] - Single Precision Forces, 64-bit Fixed Point
+|               Accumulation. (Default)
+| 
+|--------------------------------------------------------
+ 
+|----------------- CITATION INFORMATION -----------------
+|
+|    When publishing work that utilized the CUDA version
+|    of AMBER, please cite the following in addition to
+|    the regular AMBER citations:
+|
+|  - Andreas W. Goetz; Mark J. Williamson; Dong Xu;
+|    Duncan Poole; Scott Le Grand; Ross C. Walker
+|    "Routine microsecond molecular dynamics simulations
+|    with AMBER - Part I: Generalized Born", J. Chem.
+|    Theory Comput., 2012, 8 (5), pp1542-1555.
+|
+|  - Scott Le Grand; Andreas W. Goetz; Ross C. Walker
+|    "SPFP: Speed without compromise - a mixed precision
+|    model for GPU accelerated molecular dynamics
+|    simulations.", Comp. Phys. Comm., 2013, 184
+|    pp374-380, DOI: 10.1016/j.cpc.2012.09.022
+|
+|--------------------------------------------------------
+ 
+|------------------- GPU DEVICE INFO --------------------
+|
+|            CUDA_VISIBLE_DEVICES: 0
+|   CUDA Capable Devices Detected:      1
+|           CUDA Device ID in use:      0
+|                CUDA Device Name: GeForce RTX 2080 Ti
+|     CUDA Device Global Mem Size:  11019 MB
+| CUDA Device Num Multiprocessors:     68
+|           CUDA Device Core Freq:   1.62 GHz
+|
+|--------------------------------------------------------
+ 
+| Conditional Compilation Defines Used:
+| PUBFFT
+| BINTRAJ
+| CUDA
+| EMIL
+
+| New format PARM file being parsed.
+| Version =    1.000 Date = 02/16/21 Time = 10:44:49
+
+| Note: 1-4 EEL scale factors are being read from the topology file.
+
+| Note: 1-4 VDW scale factors are being read from the topology file.
+| INFO:    Reading atomic numbers from topology file.
+| Duplicated    0 dihedrals
+
+| Duplicated    0 dihedrals
+
+--------------------------------------------------------------------------------
+   1.  RESOURCE   USE: 
+--------------------------------------------------------------------------------
+
+ NATOM  =      27 NTYPES =       9 NBONH =      13 MBONA  =      14
+ NTHETH =      27 MTHETA =      18 NPHIH =      59 MPHIA  =      43
+ NHPARM =       0 NPARM  =       0 NNB   =     130 NRES   =       3
+ NBONA  =      14 NTHETA =      18 NPHIA =      43 NUMBND =      17
+ NUMANG =      33 NPTRA  =      36 NATYP =      14 NPHB   =       0
+ IFBOX  =       0 NMXRS  =      18 IFCAP =       0 NEXTRA =       0
+ NCOPY  =       0
+
+ Implicit solvent radii are ArgH and AspGluO modified Bondi2 radii (mbondi3)                                
+ Replacing prmtop screening parameters with GBn2 (igb=8) values
+ PHMD> simulation pH =    7.00
+ PHMD> titr grps     =    2
+ PHMD> lambda,barrier=    1  0.87  2.50
+ PHMD> lambda,barrier=    2  0.00  2.50
+--------------------------------------------------------------------------------
+   2.  CONTROL  DATA  FOR  THE  RUN
+--------------------------------------------------------------------------------
+
+ACE                                                                             
+
+General flags:
+     imin    =       0, nmropt  =       0
+
+Nature and format of input:
+     ntx     =       1, irest   =       0, ntrx    =       1
+
+Nature and format of output:
+     ntxo    =       2, ntpr    =     500, ntrx    =       1, ntwr    =   50000
+     iwrap   =       0, ntwx    =     500, ntwv    =       0, ntwe    =     500
+     ioutfm  =       1, ntwprt  =       0, idecomp =       0, rbornstat=      0
+
+Potential function:
+     ntf     =       2, ntb     =       0, igb     =       8, nsnb    =      25
+     ipol    =       0, gbsa    =       0, iesp    =       0
+     dielc   =   1.00000, cut     = 999.00000, intdiel =   1.00000
+     saltcon =   0.15000, offset  =   0.19514, surften =   0.00500
+     rdt     =   0.00000, rgbmax  =  25.00000  extdiel =  78.50000
+     alpb  =        0
+     gbalphaH  =   0.78844, gbbetaH   =   0.79870,  gbgammaH  =    0.43733
+     gbalphaC  =   0.73376, gbbetaC   =   0.50638,  gbgammaC  =    0.20584
+     gbalphaN  =   0.50336, gbbetaN   =   0.31683,  gbgammaN  =    0.19292
+     gbalphaOS =   0.86781, gbbetaOS  =   0.87664,  gbgammaOS =    0.38788
+     gbalphaP  =   1.00000, gbbetaP   =   0.80000,  gbgammaP  =    4.85000
+     gb_alpha_hnu  =   0.53705, gb_beta_hnu   =   0.36286,  gb_gamma_hnu  =    0.11670
+     gb_alpha_cnu  =   0.33167, gb_beta_cnu   =   0.19684,  gb_gamma_cnu  =    0.09342
+     gb_alpha_nnu  =   0.68631, gb_beta_nnu   =   0.46319,  gb_gamma_nnu  =    0.13872
+     gb_alpha_onu  =   0.60634, gb_beta_onu   =   0.46301,  gb_gamma_onu  =    0.14226
+     gb_alpha_pnu  =   0.41836, gb_beta_pnu   =   0.29005,  gb_gamma_pnu  =    0.10642
+
+Frozen or restrained atoms:
+     ibelly  =       0, ntr     =       0
+
+Molecular dynamics:
+     nstlim  =     50000, nscm    =      1000, nrespa  =         1
+     t       =   0.00000, dt      =   0.00200, vlimit  =  -1.00000
+
+Langevin dynamics temperature regulation:
+     ig      =  439928
+     temp0   = 300.00000, tempi   = 300.00000, gamma_ln=   1.00000
+
+SHAKE:
+     ntc     =       2, jfastw  =       0
+     tol     =   0.00001
+
+| Intermolecular bonds treatment:
+|     no_intermolecular_bonds =       1
+
+| Energy averages sample interval:
+|     ene_avg_sampling =     500
+
+--------------------------------------------------------------------------------
+   3.  ATOMIC COORDINATES AND VELOCITIES
+--------------------------------------------------------------------------------
+
+ACE                                                                             
+ begin time read from input coords =     0.000 ps
+
+ 
+ Number of triangulated 3-point waters found:        0
+| Dynamic Memory, Types Used:
+| Reals                1319
+| Integers             2671
+
+| GPU memory information (estimate):
+| KB of GPU memory in use:         0
+| KB of CPU memory in use:         0
+
+--------------------------------------------------------------------------------
+   4.  RESULTS
+--------------------------------------------------------------------------------
+
+
+ NSTEP =        0   TIME(PS) =       0.000  TEMP(K) =   388.95  PRESS =     0.0
+ Etot   =       -30.8786  EKtot   =        26.2789  EPtot      =       -57.1575
+ BOND   =         0.4972  ANGLE   =        22.1968  DIHED      =        16.1467
+ 1-4 NB =         1.9080  1-4 EEL =         2.7212  VDWAALS    =        -2.9886
+ EELEC  =       -70.5710  EGB     =       -27.0677  RESTRAINT  =         0.0000
+ ------------------------------------------------------------------------------
+
+
+ NSTEP =      500   TIME(PS) =       1.000  TEMP(K) =   208.98  PRESS =     0.0
+ Etot   =       -26.5416  EKtot   =        14.1198  EPtot      =       -40.6614
+ BOND   =         4.7746  ANGLE   =        30.1843  DIHED      =        19.6964
+ 1-4 NB =         1.3710  1-4 EEL =         3.8855  VDWAALS    =        -2.7135
+ EELEC  =       -71.1343  EGB     =       -26.7255  RESTRAINT  =         0.0000
+ ------------------------------------------------------------------------------
+
+
+ NSTEP =     1000   TIME(PS) =       2.000  TEMP(K) =   291.14  PRESS =     0.0
+ Etot   =       -24.7235  EKtot   =        19.6706  EPtot      =       -44.3941
+ BOND   =         3.4552  ANGLE   =        28.7423  DIHED      =        19.6775
+ 1-4 NB =         2.0869  1-4 EEL =         0.4050  VDWAALS    =        -2.7135
+ EELEC  =       -66.9663  EGB     =       -29.0811  RESTRAINT  =         0.0000
+ ------------------------------------------------------------------------------
+
+
+ NSTEP =     1500   TIME(PS) =       3.000  TEMP(K) =   309.70  PRESS =     0.0
+ Etot   =       -20.8704  EKtot   =        20.9247  EPtot      =       -41.7952
+ BOND   =         4.1130  ANGLE   =        30.4209  DIHED      =        20.4941
+ 1-4 NB =         1.3666  1-4 EEL =         2.6318  VDWAALS    =        -2.7397
+ EELEC  =       -70.2005  EGB     =       -27.8812  RESTRAINT  =         0.0000
+ ------------------------------------------------------------------------------
+
+
+ NSTEP =     2000   TIME(PS) =       4.000  TEMP(K) =   332.96  PRESS =     0.0
+ Etot   =       -16.8782  EKtot   =        22.4963  EPtot      =       -39.3745
+ BOND   =         3.9634  ANGLE   =        30.4892  DIHED      =        20.3379
+ 1-4 NB =         3.3190  1-4 EEL =         3.0316  VDWAALS    =        -2.5461
+ EELEC  =       -65.7535  EGB     =       -32.2160  RESTRAINT  =         0.0000
+ ------------------------------------------------------------------------------
+
+
+ NSTEP =     2500   TIME(PS) =       5.000  TEMP(K) =   291.18  PRESS =     0.0
+ Etot   =       -21.8394  EKtot   =        19.6732  EPtot      =       -41.5126
+ BOND   =         2.3228  ANGLE   =        28.1605  DIHED      =        22.0906
+ 1-4 NB =         2.3528  1-4 EEL =         6.1932  VDWAALS    =        -3.1146
+ EELEC  =       -67.6562  EGB     =       -31.8617  RESTRAINT  =         0.0000
+ ------------------------------------------------------------------------------
+
+
+ NSTEP =     3000   TIME(PS) =       6.000  TEMP(K) =   274.10  PRESS =     0.0
+ Etot   =       -19.5873  EKtot   =        18.5193  EPtot      =       -38.1066
+ BOND   =         2.9738  ANGLE   =        33.8336  DIHED      =        20.9071
+ 1-4 NB =         2.8880  1-4 EEL =         0.7727  VDWAALS    =        -2.7211
+ EELEC  =       -70.6354  EGB     =       -26.1253  RESTRAINT  =         0.0000
+ ------------------------------------------------------------------------------
+
+
+ NSTEP =     3500   TIME(PS) =       7.000  TEMP(K) =   339.03  PRESS =     0.0
+ Etot   =        -8.1721  EKtot   =        22.9067  EPtot      =       -31.0788
+ BOND   =         7.4724  ANGLE   =        32.6179  DIHED      =        22.4031
+ 1-4 NB =         2.1867  1-4 EEL =         0.8208  VDWAALS    =        -2.0786
+ EELEC  =       -65.6691  EGB     =       -28.8319  RESTRAINT  =         0.0000
+ ------------------------------------------------------------------------------
+
+
+ NSTEP =     4000   TIME(PS) =       8.000  TEMP(K) =   252.13  PRESS =     0.0
+ Etot   =       -24.3563  EKtot   =        17.0353  EPtot      =       -41.3916
+ BOND   =         4.8593  ANGLE   =        29.6211  DIHED      =        19.7868
+ 1-4 NB =         1.8730  1-4 EEL =         4.1056  VDWAALS    =        -2.4047
+ EELEC  =       -72.9132  EGB     =       -26.3195  RESTRAINT  =         0.0000
+ ------------------------------------------------------------------------------
+
+
+ NSTEP =     4500   TIME(PS) =       9.000  TEMP(K) =   338.19  PRESS =     0.0
+ Etot   =       -20.1897  EKtot   =        22.8495  EPtot      =       -43.0391
+ BOND   =         3.0164  ANGLE   =        28.9303  DIHED      =        21.5639
+ 1-4 NB =         1.9078  1-4 EEL =        -0.5791  VDWAALS    =        -2.5914
+ EELEC  =       -67.8712  EGB     =       -27.4158  RESTRAINT  =         0.0000
+ ------------------------------------------------------------------------------
+
+
+ NSTEP =     5000   TIME(PS) =      10.000  TEMP(K) =   271.28  PRESS =     0.0
+ Etot   =       -20.3501  EKtot   =        18.3290  EPtot      =       -38.6791
+ BOND   =         5.0991  ANGLE   =        31.3524  DIHED      =        21.0995
+ 1-4 NB =         2.4575  1-4 EEL =         0.5069  VDWAALS    =        -2.5484
+ EELEC  =       -68.7402  EGB     =       -27.9058  RESTRAINT  =         0.0000
+ ------------------------------------------------------------------------------
+
+
+ NSTEP =     5500   TIME(PS) =      11.000  TEMP(K) =   337.17  PRESS =     0.0
+ Etot   =       -17.6959  EKtot   =        22.7807  EPtot      =       -40.4766
+ BOND   =         3.8403  ANGLE   =        31.0496  DIHED      =        19.1995
+ 1-4 NB =         2.8927  1-4 EEL =         0.6348  VDWAALS    =        -2.8986
+ EELEC  =       -67.9600  EGB     =       -27.2349  RESTRAINT  =         0.0000
+ ------------------------------------------------------------------------------
+
+
+ NSTEP =     6000   TIME(PS) =      12.000  TEMP(K) =   402.69  PRESS =     0.0
+ Etot   =       -10.2998  EKtot   =        27.2077  EPtot      =       -37.5075
+ BOND   =         4.6627  ANGLE   =        30.8260  DIHED      =        19.1525
+ 1-4 NB =         2.7754  1-4 EEL =         7.3552  VDWAALS    =        -0.9872
+ EELEC  =       -76.5923  EGB     =       -24.6997  RESTRAINT  =         0.0000
+ ------------------------------------------------------------------------------
+
+
+ NSTEP =     6500   TIME(PS) =      13.000  TEMP(K) =   324.74  PRESS =     0.0
+ Etot   =       -17.5750  EKtot   =        21.9411  EPtot      =       -39.5160
+ BOND   =         2.3168  ANGLE   =        31.0347  DIHED      =        19.8499
+ 1-4 NB =         2.6703  1-4 EEL =         3.9953  VDWAALS    =        -1.8436
+ EELEC  =       -71.8794  EGB     =       -25.6599  RESTRAINT  =         0.0000
+ ------------------------------------------------------------------------------
+
+
+ NSTEP =     7000   TIME(PS) =      14.000  TEMP(K) =   246.07  PRESS =     0.0
+ Etot   =       -22.5317  EKtot   =        16.6255  EPtot      =       -39.1572
+ BOND   =         5.0471  ANGLE   =        29.4613  DIHED      =        21.8723
+ 1-4 NB =         1.6560  1-4 EEL =         1.4692  VDWAALS    =        -2.3611
+ EELEC  =       -65.3329  EGB     =       -30.9690  RESTRAINT  =         0.0000
+ ------------------------------------------------------------------------------
+
+
+ NSTEP =     7500   TIME(PS) =      15.000  TEMP(K) =   279.83  PRESS =     0.0
+ Etot   =       -25.3777  EKtot   =        18.9065  EPtot      =       -44.2842
+ BOND   =         3.7830  ANGLE   =        28.8088  DIHED      =        19.2293
+ 1-4 NB =         1.7063  1-4 EEL =         3.9152  VDWAALS    =        -3.0159
+ EELEC  =       -68.7404  EGB     =       -29.9705  RESTRAINT  =         0.0000
+ ------------------------------------------------------------------------------
+
+
+ NSTEP =     8000   TIME(PS) =      16.000  TEMP(K) =   236.35  PRESS =     0.0
+ Etot   =       -21.2486  EKtot   =        15.9692  EPtot      =       -37.2177
+ BOND   =         4.7430  ANGLE   =        31.1809  DIHED      =        21.7865
+ 1-4 NB =         2.7491  1-4 EEL =         3.2929  VDWAALS    =        -2.6788
+ EELEC  =       -68.5510  EGB     =       -29.7403  RESTRAINT  =         0.0000
+ ------------------------------------------------------------------------------
+
+
+ NSTEP =     8500   TIME(PS) =      17.000  TEMP(K) =   252.92  PRESS =     0.0
+ Etot   =       -21.9315  EKtot   =        17.0885  EPtot      =       -39.0200
+ BOND   =         7.2199  ANGLE   =        29.5885  DIHED      =        20.3922
+ 1-4 NB =         1.7116  1-4 EEL =         3.8680  VDWAALS    =        -2.6669
+ EELEC  =       -72.6166  EGB     =       -26.5167  RESTRAINT  =         0.0000
+ ------------------------------------------------------------------------------
+
+
+ NSTEP =     9000   TIME(PS) =      18.000  TEMP(K) =   290.02  PRESS =     0.0
+ Etot   =       -21.2232  EKtot   =        19.5950  EPtot      =       -40.8183
+ BOND   =         5.2102  ANGLE   =        30.0328  DIHED      =        19.8983
+ 1-4 NB =         2.0204  1-4 EEL =         2.9751  VDWAALS    =        -2.7312
+ EELEC  =       -71.9908  EGB     =       -26.2331  RESTRAINT  =         0.0000
+ ------------------------------------------------------------------------------
+
+
+ NSTEP =     9500   TIME(PS) =      19.000  TEMP(K) =   329.77  PRESS =     0.0
+ Etot   =       -21.7986  EKtot   =        22.2810  EPtot      =       -44.0796
+ BOND   =         4.9034  ANGLE   =        28.3851  DIHED      =        18.7040
+ 1-4 NB =         1.8117  1-4 EEL =         1.1617  VDWAALS    =        -2.6134
+ EELEC  =       -69.3459  EGB     =       -27.0864  RESTRAINT  =         0.0000
+ ------------------------------------------------------------------------------
+
+
+ NSTEP =    10000   TIME(PS) =      20.000  TEMP(K) =   234.66  PRESS =     0.0
+ Etot   =       -24.8459  EKtot   =        15.8548  EPtot      =       -40.7006
+ BOND   =         5.4124  ANGLE   =        28.3862  DIHED      =        20.7007
+ 1-4 NB =         1.9206  1-4 EEL =         0.9947  VDWAALS    =        -2.7017
+ EELEC  =       -66.5692  EGB     =       -28.8443  RESTRAINT  =         0.0000
+ ------------------------------------------------------------------------------
+
+
+ NSTEP =    10500   TIME(PS) =      21.000  TEMP(K) =   241.40  PRESS =     0.0
+ Etot   =       -23.0923  EKtot   =        16.3098  EPtot      =       -39.4020
+ BOND   =         2.3806  ANGLE   =        31.6953  DIHED      =        21.5077
+ 1-4 NB =         3.0642  1-4 EEL =         3.1809  VDWAALS    =        -2.5700
+ EELEC  =       -72.2480  EGB     =       -26.4126  RESTRAINT  =         0.0000
+ ------------------------------------------------------------------------------
+
+
+ NSTEP =    11000   TIME(PS) =      22.000  TEMP(K) =   262.85  PRESS =     0.0
+ Etot   =       -23.2176  EKtot   =        17.7595  EPtot      =       -40.9771
+ BOND   =         5.3819  ANGLE   =        31.5900  DIHED      =        19.1109
+ 1-4 NB =         2.4635  1-4 EEL =         0.4602  VDWAALS    =        -3.1721
+ EELEC  =       -67.3412  EGB     =       -29.4703  RESTRAINT  =         0.0000
+ ------------------------------------------------------------------------------
+
+
+ NSTEP =    11500   TIME(PS) =      23.000  TEMP(K) =   227.41  PRESS =     0.0
+ Etot   =       -22.2388  EKtot   =        15.3647  EPtot      =       -37.6034
+ BOND   =         4.3129  ANGLE   =        31.8844  DIHED      =        23.0262
+ 1-4 NB =         2.0145  1-4 EEL =         2.2913  VDWAALS    =        -3.0220
+ EELEC  =       -70.5788  EGB     =       -27.5319  RESTRAINT  =         0.0000
+ ------------------------------------------------------------------------------
+
+
+ NSTEP =    12000   TIME(PS) =      24.000  TEMP(K) =   256.21  PRESS =     0.0
+ Etot   =       -23.1861  EKtot   =        17.3108  EPtot      =       -40.4969
+ BOND   =         6.6419  ANGLE   =        28.4378  DIHED      =        21.0611
+ 1-4 NB =         2.4101  1-4 EEL =         0.4700  VDWAALS    =        -2.6796
+ EELEC  =       -70.6122  EGB     =       -26.2261  RESTRAINT  =         0.0000
+ ------------------------------------------------------------------------------
+
+
+ NSTEP =    12500   TIME(PS) =      25.000  TEMP(K) =   300.38  PRESS =     0.0
+ Etot   =       -14.8050  EKtot   =        20.2951  EPtot      =       -35.1000
+ BOND   =         6.5074  ANGLE   =        34.4875  DIHED      =        20.1622
+ 1-4 NB =         2.0485  1-4 EEL =         3.7647  VDWAALS    =        -2.7189
+ EELEC  =       -72.8471  EGB     =       -26.5043  RESTRAINT  =         0.0000
+ ------------------------------------------------------------------------------
+
+
+ NSTEP =    13000   TIME(PS) =      26.000  TEMP(K) =   388.30  PRESS =     0.0
+ Etot   =        -9.1435  EKtot   =        26.2351  EPtot      =       -35.3786
+ BOND   =         7.8209  ANGLE   =        30.0442  DIHED      =        23.1400
+ 1-4 NB =         2.1538  1-4 EEL =        -1.5675  VDWAALS    =        -2.3870
+ EELEC  =       -67.9328  EGB     =       -26.6502  RESTRAINT  =         0.0000
+ ------------------------------------------------------------------------------
+
+
+ NSTEP =    13500   TIME(PS) =      27.000  TEMP(K) =   383.89  PRESS =     0.0
+ Etot   =       -10.5667  EKtot   =        25.9374  EPtot      =       -36.5041
+ BOND   =         6.2104  ANGLE   =        33.0532  DIHED      =        17.9992
+ 1-4 NB =         2.8594  1-4 EEL =         1.9105  VDWAALS    =        -1.6341
+ EELEC  =       -71.4679  EGB     =       -25.4347  RESTRAINT  =         0.0000
+ ------------------------------------------------------------------------------
+
+
+ NSTEP =    14000   TIME(PS) =      28.000  TEMP(K) =   327.67  PRESS =     0.0
+ Etot   =       -13.5393  EKtot   =        22.1387  EPtot      =       -35.6780
+ BOND   =         3.0399  ANGLE   =        32.3018  DIHED      =        21.7512
+ 1-4 NB =         3.4245  1-4 EEL =         2.9227  VDWAALS    =        -2.5292
+ EELEC  =       -67.7755  EGB     =       -28.8132  RESTRAINT  =         0.0000
+ ------------------------------------------------------------------------------
+
+
+ NSTEP =    14500   TIME(PS) =      29.000  TEMP(K) =   319.58  PRESS =     0.0
+ Etot   =       -20.8058  EKtot   =        21.5920  EPtot      =       -42.3978
+ BOND   =         5.1123  ANGLE   =        28.6029  DIHED      =        19.1561
+ 1-4 NB =         2.9711  1-4 EEL =         1.6814  VDWAALS    =        -2.5457
+ EELEC  =       -71.5617  EGB     =       -25.8143  RESTRAINT  =         0.0000
+ ------------------------------------------------------------------------------
+
+
+ NSTEP =    15000   TIME(PS) =      30.000  TEMP(K) =   283.80  PRESS =     0.0
+ Etot   =       -20.9751  EKtot   =        19.1748  EPtot      =       -40.1499
+ BOND   =         3.5833  ANGLE   =        29.4273  DIHED      =        22.0250
+ 1-4 NB =         3.2043  1-4 EEL =         2.2943  VDWAALS    =        -2.3428
+ EELEC  =       -71.1804  EGB     =       -27.1608  RESTRAINT  =         0.0000
+ ------------------------------------------------------------------------------
+
+
+ NSTEP =    15500   TIME(PS) =      31.000  TEMP(K) =   301.58  PRESS =     0.0
+ Etot   =       -23.9997  EKtot   =        20.3758  EPtot      =       -44.3755
+ BOND   =         5.4534  ANGLE   =        26.6781  DIHED      =        19.1309
+ 1-4 NB =         1.6121  1-4 EEL =         2.6850  VDWAALS    =        -2.8908
+ EELEC  =       -69.1436  EGB     =       -27.9005  RESTRAINT  =         0.0000
+ ------------------------------------------------------------------------------
+
+
+ NSTEP =    16000   TIME(PS) =      32.000  TEMP(K) =   235.14  PRESS =     0.0
+ Etot   =       -21.1094  EKtot   =        15.8871  EPtot      =       -36.9964
+ BOND   =         5.9618  ANGLE   =        30.5413  DIHED      =        23.8988
+ 1-4 NB =         1.9597  1-4 EEL =        -0.1375  VDWAALS    =        -2.8607
+ EELEC  =       -69.4401  EGB     =       -26.9199  RESTRAINT  =         0.0000
+ ------------------------------------------------------------------------------
+
+
+ NSTEP =    16500   TIME(PS) =      33.000  TEMP(K) =   319.48  PRESS =     0.0
+ Etot   =       -19.6159  EKtot   =        21.5853  EPtot      =       -41.2012
+ BOND   =         5.3844  ANGLE   =        31.6470  DIHED      =        18.3248
+ 1-4 NB =         2.1563  1-4 EEL =         4.1917  VDWAALS    =        -2.5729
+ EELEC  =       -72.3261  EGB     =       -28.0064  RESTRAINT  =         0.0000
+ ------------------------------------------------------------------------------
+
+
+ NSTEP =    17000   TIME(PS) =      34.000  TEMP(K) =   250.55  PRESS =     0.0
+ Etot   =       -21.9818  EKtot   =        16.9286  EPtot      =       -38.9104
+ BOND   =         7.0150  ANGLE   =        29.2624  DIHED      =        21.6245
+ 1-4 NB =         1.7791  1-4 EEL =         3.8010  VDWAALS    =        -3.3484
+ EELEC  =       -71.9941  EGB     =       -27.0500  RESTRAINT  =         0.0000
+ ------------------------------------------------------------------------------
+
+
+ NSTEP =    17500   TIME(PS) =      35.000  TEMP(K) =   247.51  PRESS =     0.0
+ Etot   =       -21.0900  EKtot   =        16.7230  EPtot      =       -37.8131
+ BOND   =         5.0548  ANGLE   =        32.6106  DIHED      =        20.9783
+ 1-4 NB =         1.6641  1-4 EEL =         5.9178  VDWAALS    =        -3.2124
+ EELEC  =       -74.2804  EGB     =       -26.5459  RESTRAINT  =         0.0000
+ ------------------------------------------------------------------------------
+
+
+ NSTEP =    18000   TIME(PS) =      36.000  TEMP(K) =   295.24  PRESS =     0.0
+ Etot   =       -19.1261  EKtot   =        19.9476  EPtot      =       -39.0737
+ BOND   =         5.2982  ANGLE   =        28.8422  DIHED      =        22.5604
+ 1-4 NB =         2.3741  1-4 EEL =         5.8339  VDWAALS    =        -3.0199
+ EELEC  =       -72.7601  EGB     =       -28.2024  RESTRAINT  =         0.0000
+ ------------------------------------------------------------------------------
+
+
+ NSTEP =    18500   TIME(PS) =      37.000  TEMP(K) =   337.05  PRESS =     0.0
+ Etot   =       -11.7990  EKtot   =        22.7727  EPtot      =       -34.5717
+ BOND   =         2.6965  ANGLE   =        34.9720  DIHED      =        22.7525
+ 1-4 NB =         2.7101  1-4 EEL =         1.5604  VDWAALS    =        -2.8078
+ EELEC  =       -69.8546  EGB     =       -26.6008  RESTRAINT  =         0.0000
+ ------------------------------------------------------------------------------
+
+
+ NSTEP =    19000   TIME(PS) =      38.000  TEMP(K) =   272.58  PRESS =     0.0
+ Etot   =       -18.3267  EKtot   =        18.4165  EPtot      =       -36.7432
+ BOND   =         3.1877  ANGLE   =        34.9470  DIHED      =        20.1519
+ 1-4 NB =         2.4206  1-4 EEL =         4.8974  VDWAALS    =        -1.1763
+ EELEC  =       -73.4592  EGB     =       -27.7123  RESTRAINT  =         0.0000
+ ------------------------------------------------------------------------------
+
+
+ NSTEP =    19500   TIME(PS) =      39.000  TEMP(K) =   280.84  PRESS =     0.0
+ Etot   =       -25.5766  EKtot   =        18.9746  EPtot      =       -44.5512
+ BOND   =         3.0040  ANGLE   =        28.6684  DIHED      =        18.6806
+ 1-4 NB =         1.9996  1-4 EEL =         4.3177  VDWAALS    =        -2.4917
+ EELEC  =       -72.0133  EGB     =       -26.7166  RESTRAINT  =         0.0000
+ ------------------------------------------------------------------------------
+
+
+ NSTEP =    20000   TIME(PS) =      40.000  TEMP(K) =   333.21  PRESS =     0.0
+ Etot   =       -15.6599  EKtot   =        22.5134  EPtot      =       -38.1734
+ BOND   =         2.1199  ANGLE   =        32.6880  DIHED      =        19.9192
+ 1-4 NB =         4.8276  1-4 EEL =         7.2178  VDWAALS    =        -1.5458
+ EELEC  =       -77.5956  EGB     =       -25.8044  RESTRAINT  =         0.0000
+ ------------------------------------------------------------------------------
+
+
+ NSTEP =    20500   TIME(PS) =      41.000  TEMP(K) =   239.01  PRESS =     0.0
+ Etot   =       -20.6393  EKtot   =        16.1483  EPtot      =       -36.7876
+ BOND   =         3.5093  ANGLE   =        31.1112  DIHED      =        22.7167
+ 1-4 NB =         2.7151  1-4 EEL =         3.4707  VDWAALS    =        -3.1317
+ EELEC  =       -68.5245  EGB     =       -28.6544  RESTRAINT  =         0.0000
+ ------------------------------------------------------------------------------
+
+
+ NSTEP =    21000   TIME(PS) =      42.000  TEMP(K) =   256.78  PRESS =     0.0
+ Etot   =       -12.8899  EKtot   =        17.3495  EPtot      =       -30.2394
+ BOND   =         7.5181  ANGLE   =        33.3061  DIHED      =        24.4942
+ 1-4 NB =         3.3102  1-4 EEL =         3.2415  VDWAALS    =        -3.2972
+ EELEC  =       -72.2392  EGB     =       -26.5731  RESTRAINT  =         0.0000
+ ------------------------------------------------------------------------------
+
+
+ NSTEP =    21500   TIME(PS) =      43.000  TEMP(K) =   250.62  PRESS =     0.0
+ Etot   =       -23.6402  EKtot   =        16.9333  EPtot      =       -40.5735
+ BOND   =         5.6100  ANGLE   =        31.0671  DIHED      =        18.3868
+ 1-4 NB =         1.8508  1-4 EEL =         1.8081  VDWAALS    =        -1.5062
+ EELEC  =       -69.2233  EGB     =       -28.5668  RESTRAINT  =         0.0000
+ ------------------------------------------------------------------------------
+
+
+ NSTEP =    22000   TIME(PS) =      44.000  TEMP(K) =   257.67  PRESS =     0.0
+ Etot   =       -24.0511  EKtot   =        17.4092  EPtot      =       -41.4603
+ BOND   =         3.9622  ANGLE   =        31.0650  DIHED      =        17.9930
+ 1-4 NB =         2.5672  1-4 EEL =         3.4214  VDWAALS    =        -3.0798
+ EELEC  =       -71.4682  EGB     =       -25.9211  RESTRAINT  =         0.0000
+ ------------------------------------------------------------------------------
+
+
+ NSTEP =    22500   TIME(PS) =      45.000  TEMP(K) =   251.45  PRESS =     0.0
+ Etot   =       -23.2212  EKtot   =        16.9891  EPtot      =       -40.2103
+ BOND   =         5.9284  ANGLE   =        30.5938  DIHED      =        18.3568
+ 1-4 NB =         2.6362  1-4 EEL =         1.4356  VDWAALS    =        -1.3630
+ EELEC  =       -71.7853  EGB     =       -26.0128  RESTRAINT  =         0.0000
+ ------------------------------------------------------------------------------
+
+
+ NSTEP =    23000   TIME(PS) =      46.000  TEMP(K) =   312.69  PRESS =     0.0
+ Etot   =       -18.7332  EKtot   =        21.1265  EPtot      =       -39.8597
+ BOND   =         3.0391  ANGLE   =        29.3712  DIHED      =        22.5814
+ 1-4 NB =         2.4167  1-4 EEL =         5.2474  VDWAALS    =        -3.4165
+ EELEC  =       -71.7387  EGB     =       -27.3602  RESTRAINT  =         0.0000
+ ------------------------------------------------------------------------------
+
+
+ NSTEP =    23500   TIME(PS) =      47.000  TEMP(K) =   281.57  PRESS =     0.0
+ Etot   =       -22.5392  EKtot   =        19.0241  EPtot      =       -41.5633
+ BOND   =         4.9504  ANGLE   =        29.4882  DIHED      =        18.1986
+ 1-4 NB =         3.1457  1-4 EEL =         5.7326  VDWAALS    =        -3.0890
+ EELEC  =       -72.4597  EGB     =       -27.5300  RESTRAINT  =         0.0000
+ ------------------------------------------------------------------------------
+
+
+ NSTEP =    24000   TIME(PS) =      48.000  TEMP(K) =   333.92  PRESS =     0.0
+ Etot   =       -19.5562  EKtot   =        22.5611  EPtot      =       -42.1173
+ BOND   =         1.9619  ANGLE   =        31.1090  DIHED      =        19.6608
+ 1-4 NB =         2.9028  1-4 EEL =         2.1378  VDWAALS    =        -2.7247
+ EELEC  =       -68.9569  EGB     =       -28.2080  RESTRAINT  =         0.0000
+ ------------------------------------------------------------------------------
+
+
+ NSTEP =    24500   TIME(PS) =      49.000  TEMP(K) =   255.37  PRESS =     0.0
+ Etot   =       -28.5202  EKtot   =        17.2539  EPtot      =       -45.7742
+ BOND   =         3.3932  ANGLE   =        25.8813  DIHED      =        21.1387
+ 1-4 NB =         2.0960  1-4 EEL =         4.6782  VDWAALS    =        -3.4372
+ EELEC  =       -71.3969  EGB     =       -28.1275  RESTRAINT  =         0.0000
+ ------------------------------------------------------------------------------
+
+
+ NSTEP =    25000   TIME(PS) =      50.000  TEMP(K) =   206.18  PRESS =     0.0
+ Etot   =       -29.8422  EKtot   =        13.9306  EPtot      =       -43.7728
+ BOND   =         5.1766  ANGLE   =        28.7404  DIHED      =        18.5416
+ 1-4 NB =         1.6433  1-4 EEL =         4.7705  VDWAALS    =        -3.1209
+ EELEC  =       -70.9859  EGB     =       -28.5384  RESTRAINT  =         0.0000
+ ------------------------------------------------------------------------------
+
+
+ NSTEP =    25500   TIME(PS) =      51.000  TEMP(K) =   390.23  PRESS =     0.0
+ Etot   =       -16.4551  EKtot   =        26.3654  EPtot      =       -42.8205
+ BOND   =         5.4229  ANGLE   =        30.3987  DIHED      =        18.8414
+ 1-4 NB =         1.7924  1-4 EEL =         4.0673  VDWAALS    =        -3.0081
+ EELEC  =       -72.9579  EGB     =       -27.3772  RESTRAINT  =         0.0000
+ ------------------------------------------------------------------------------
+
+
+ NSTEP =    26000   TIME(PS) =      52.000  TEMP(K) =   315.52  PRESS =     0.0
+ Etot   =       -19.5938  EKtot   =        21.3176  EPtot      =       -40.9114
+ BOND   =         1.7076  ANGLE   =        32.1419  DIHED      =        19.9474
+ 1-4 NB =         2.5771  1-4 EEL =         6.2922  VDWAALS    =        -3.3441
+ EELEC  =       -73.1363  EGB     =       -27.0972  RESTRAINT  =         0.0000
+ ------------------------------------------------------------------------------
+
+
+ NSTEP =    26500   TIME(PS) =      53.000  TEMP(K) =   289.05  PRESS =     0.0
+ Etot   =       -18.5941  EKtot   =        19.5297  EPtot      =       -38.1238
+ BOND   =         3.5714  ANGLE   =        33.0652  DIHED      =        20.8779
+ 1-4 NB =         2.6090  1-4 EEL =         5.0092  VDWAALS    =        -3.2217
+ EELEC  =       -72.7096  EGB     =       -27.3254  RESTRAINT  =         0.0000
+ ------------------------------------------------------------------------------
+
+
+ NSTEP =    27000   TIME(PS) =      54.000  TEMP(K) =   346.06  PRESS =     0.0
+ Etot   =       -19.5689  EKtot   =        23.3813  EPtot      =       -42.9502
+ BOND   =         2.3882  ANGLE   =        30.1216  DIHED      =        19.5567
+ 1-4 NB =         2.2467  1-4 EEL =         3.8819  VDWAALS    =        -2.3535
+ EELEC  =       -71.4694  EGB     =       -27.3225  RESTRAINT  =         0.0000
+ ------------------------------------------------------------------------------
+
+
+ NSTEP =    27500   TIME(PS) =      55.000  TEMP(K) =   211.07  PRESS =     0.0
+ Etot   =       -25.1045  EKtot   =        14.2607  EPtot      =       -39.3652
+ BOND   =         6.2985  ANGLE   =        28.3148  DIHED      =        21.1360
+ 1-4 NB =         2.7735  1-4 EEL =         2.3265  VDWAALS    =        -1.6174
+ EELEC  =       -73.3149  EGB     =       -25.2823  RESTRAINT  =         0.0000
+ ------------------------------------------------------------------------------
+
+
+ NSTEP =    28000   TIME(PS) =      56.000  TEMP(K) =   267.74  PRESS =     0.0
+ Etot   =       -18.1060  EKtot   =        18.0895  EPtot      =       -36.1955
+ BOND   =         5.9470  ANGLE   =        32.3088  DIHED      =        21.6893
+ 1-4 NB =         2.5750  1-4 EEL =        -0.3647  VDWAALS    =        -2.5946
+ EELEC  =       -70.0220  EGB     =       -25.7342  RESTRAINT  =         0.0000
+ ------------------------------------------------------------------------------
+
+
+ NSTEP =    28500   TIME(PS) =      57.000  TEMP(K) =   278.35  PRESS =     0.0
+ Etot   =       -13.6544  EKtot   =        18.8064  EPtot      =       -32.4608
+ BOND   =        11.3434  ANGLE   =        29.5743  DIHED      =        23.1834
+ 1-4 NB =         1.8846  1-4 EEL =         4.3087  VDWAALS    =        -2.7397
+ EELEC  =       -72.4885  EGB     =       -27.5269  RESTRAINT  =         0.0000
+ ------------------------------------------------------------------------------
+
+
+ NSTEP =    29000   TIME(PS) =      58.000  TEMP(K) =   313.40  PRESS =     0.0
+ Etot   =       -11.3204  EKtot   =        21.1748  EPtot      =       -32.4951
+ BOND   =         6.2334  ANGLE   =        36.4410  DIHED      =        22.9129
+ 1-4 NB =         2.5920  1-4 EEL =         4.6725  VDWAALS    =        -3.2449
+ EELEC  =       -75.8380  EGB     =       -26.2639  RESTRAINT  =         0.0000
+ ------------------------------------------------------------------------------
+
+
+ NSTEP =    29500   TIME(PS) =      59.000  TEMP(K) =   328.17  PRESS =     0.0
+ Etot   =       -17.4457  EKtot   =        22.1726  EPtot      =       -39.6183
+ BOND   =         4.7372  ANGLE   =        28.5164  DIHED      =        24.0421
+ 1-4 NB =         2.6147  1-4 EEL =         4.3578  VDWAALS    =        -3.1198
+ EELEC  =       -73.5896  EGB     =       -27.1770  RESTRAINT  =         0.0000
+ ------------------------------------------------------------------------------
+
+
+ NSTEP =    30000   TIME(PS) =      60.000  TEMP(K) =   304.93  PRESS =     0.0
+ Etot   =       -20.8854  EKtot   =        20.6024  EPtot      =       -41.4877
+ BOND   =         2.4146  ANGLE   =        30.7845  DIHED      =        20.1998
+ 1-4 NB =         3.1659  1-4 EEL =         4.6345  VDWAALS    =        -2.7151
+ EELEC  =       -72.6630  EGB     =       -27.3088  RESTRAINT  =         0.0000
+ ------------------------------------------------------------------------------
+
+
+ NSTEP =    30500   TIME(PS) =      61.000  TEMP(K) =   386.84  PRESS =     0.0
+ Etot   =       -13.8680  EKtot   =        26.1363  EPtot      =       -40.0043
+ BOND   =         3.6125  ANGLE   =        33.5572  DIHED      =        19.1845
+ 1-4 NB =         1.7736  1-4 EEL =        -0.2172  VDWAALS    =        -2.8873
+ EELEC  =       -64.7664  EGB     =       -30.2613  RESTRAINT  =         0.0000
+ ------------------------------------------------------------------------------
+
+
+ NSTEP =    31000   TIME(PS) =      62.000  TEMP(K) =   345.56  PRESS =     0.0
+ Etot   =       -17.3192  EKtot   =        23.3476  EPtot      =       -40.6668
+ BOND   =         2.8887  ANGLE   =        30.6500  DIHED      =        19.3480
+ 1-4 NB =         1.9865  1-4 EEL =         7.3304  VDWAALS    =        -2.6273
+ EELEC  =       -68.1218  EGB     =       -32.1213  RESTRAINT  =         0.0000
+ ------------------------------------------------------------------------------
+
+
+ NSTEP =    31500   TIME(PS) =      63.000  TEMP(K) =   306.35  PRESS =     0.0
+ Etot   =       -16.8558  EKtot   =        20.6985  EPtot      =       -37.5543
+ BOND   =         4.6267  ANGLE   =        29.5544  DIHED      =        24.3845
+ 1-4 NB =         3.3519  1-4 EEL =         0.4225  VDWAALS    =        -2.9076
+ EELEC  =       -68.2802  EGB     =       -28.7066  RESTRAINT  =         0.0000
+ ------------------------------------------------------------------------------
+
+
+ NSTEP =    32000   TIME(PS) =      64.000  TEMP(K) =   214.96  PRESS =     0.0
+ Etot   =       -20.0336  EKtot   =        14.5234  EPtot      =       -34.5570
+ BOND   =         9.7033  ANGLE   =        29.9012  DIHED      =        20.4784
+ 1-4 NB =         2.8671  1-4 EEL =         3.0150  VDWAALS    =        -2.5643
+ EELEC  =       -67.7456  EGB     =       -30.2121  RESTRAINT  =         0.0000
+ ------------------------------------------------------------------------------
+
+
+ NSTEP =    32500   TIME(PS) =      65.000  TEMP(K) =   304.73  PRESS =     0.0
+ Etot   =       -19.1675  EKtot   =        20.5890  EPtot      =       -39.7565
+ BOND   =         8.0666  ANGLE   =        26.2510  DIHED      =        20.7626
+ 1-4 NB =         2.3995  1-4 EEL =         5.3603  VDWAALS    =        -2.6600
+ EELEC  =       -71.1093  EGB     =       -28.8272  RESTRAINT  =         0.0000
+ ------------------------------------------------------------------------------
+
+
+ NSTEP =    33000   TIME(PS) =      66.000  TEMP(K) =   236.14  PRESS =     0.0
+ Etot   =       -24.5758  EKtot   =        15.9545  EPtot      =       -40.5304
+ BOND   =         4.3289  ANGLE   =        28.5241  DIHED      =        21.5676
+ 1-4 NB =         2.0143  1-4 EEL =         1.5859  VDWAALS    =        -2.8606
+ EELEC  =       -67.8119  EGB     =       -27.8787  RESTRAINT  =         0.0000
+ ------------------------------------------------------------------------------
+
+
+ NSTEP =    33500   TIME(PS) =      67.000  TEMP(K) =   395.27  PRESS =     0.0
+ Etot   =       -13.4141  EKtot   =        26.7061  EPtot      =       -40.1202
+ BOND   =         3.8917  ANGLE   =        30.1185  DIHED      =        22.9728
+ 1-4 NB =         2.7347  1-4 EEL =         0.0978  VDWAALS    =        -3.2091
+ EELEC  =       -66.1738  EGB     =       -30.5528  RESTRAINT  =         0.0000
+ ------------------------------------------------------------------------------
+
+
+ NSTEP =    34000   TIME(PS) =      68.000  TEMP(K) =   416.07  PRESS =     0.0
+ Etot   =        -8.6971  EKtot   =        28.1118  EPtot      =       -36.8090
+ BOND   =         4.0524  ANGLE   =        27.5021  DIHED      =        22.8720
+ 1-4 NB =         3.6400  1-4 EEL =         6.6240  VDWAALS    =        -1.2452
+ EELEC  =       -72.0668  EGB     =       -28.1876  RESTRAINT  =         0.0000
+ ------------------------------------------------------------------------------
+
+
+ NSTEP =    34500   TIME(PS) =      69.000  TEMP(K) =   410.40  PRESS =     0.0
+ Etot   =        -8.9819  EKtot   =        27.7282  EPtot      =       -36.7102
+ BOND   =         5.6747  ANGLE   =        32.6518  DIHED      =        18.0919
+ 1-4 NB =         3.9303  1-4 EEL =         3.9850  VDWAALS    =        -2.2342
+ EELEC  =       -68.8519  EGB     =       -29.9578  RESTRAINT  =         0.0000
+ ------------------------------------------------------------------------------
+
+
+ NSTEP =    35000   TIME(PS) =      70.000  TEMP(K) =   336.67  PRESS =     0.0
+ Etot   =       -14.5871  EKtot   =        22.7469  EPtot      =       -37.3341
+ BOND   =         6.1431  ANGLE   =        28.7875  DIHED      =        21.5928
+ 1-4 NB =         2.4410  1-4 EEL =         7.7813  VDWAALS    =        -2.9987
+ EELEC  =       -68.1879  EGB     =       -32.8933  RESTRAINT  =         0.0000
+ ------------------------------------------------------------------------------
+
+
+ NSTEP =    35500   TIME(PS) =      71.000  TEMP(K) =   273.25  PRESS =     0.0
+ Etot   =       -26.5520  EKtot   =        18.4622  EPtot      =       -45.0142
+ BOND   =         3.2609  ANGLE   =        29.0542  DIHED      =        18.6944
+ 1-4 NB =         2.1836  1-4 EEL =         4.4518  VDWAALS    =        -3.2137
+ EELEC  =       -65.9670  EGB     =       -33.4783  RESTRAINT  =         0.0000
+ ------------------------------------------------------------------------------
+
+
+ NSTEP =    36000   TIME(PS) =      72.000  TEMP(K) =   312.37  PRESS =     0.0
+ Etot   =       -19.5502  EKtot   =        21.1054  EPtot      =       -40.6556
+ BOND   =         4.6974  ANGLE   =        29.1068  DIHED      =        19.7418
+ 1-4 NB =         3.0398  1-4 EEL =        -2.3434  VDWAALS    =        -2.4092
+ EELEC  =       -61.1159  EGB     =       -31.3729  RESTRAINT  =         0.0000
+ ------------------------------------------------------------------------------
+
+
+ NSTEP =    36500   TIME(PS) =      73.000  TEMP(K) =   337.13  PRESS =     0.0
+ Etot   =       -15.2609  EKtot   =        22.7783  EPtot      =       -38.0392
+ BOND   =         6.3195  ANGLE   =        28.2873  DIHED      =        19.7285
+ 1-4 NB =         4.4598  1-4 EEL =         6.7815  VDWAALS    =        -2.5146
+ EELEC  =       -68.4165  EGB     =       -32.6846  RESTRAINT  =         0.0000
+ ------------------------------------------------------------------------------
+
+
+ NSTEP =    37000   TIME(PS) =      74.000  TEMP(K) =   345.00  PRESS =     0.0
+ Etot   =       -11.8838  EKtot   =        23.3096  EPtot      =       -35.1935
+ BOND   =         3.7370  ANGLE   =        36.3447  DIHED      =        19.7452
+ 1-4 NB =         1.7725  1-4 EEL =        -3.4138  VDWAALS    =        -1.9610
+ EELEC  =       -59.6251  EGB     =       -31.7929  RESTRAINT  =         0.0000
+ ------------------------------------------------------------------------------
+
+
+ NSTEP =    37500   TIME(PS) =      75.000  TEMP(K) =   427.47  PRESS =     0.0
+ Etot   =        -4.1969  EKtot   =        28.8821  EPtot      =       -33.0790
+ BOND   =         3.5217  ANGLE   =        30.5328  DIHED      =        24.3237
+ 1-4 NB =         4.9594  1-4 EEL =         3.9237  VDWAALS    =        -2.5939
+ EELEC  =       -65.8246  EGB     =       -31.9219  RESTRAINT  =         0.0000
+ ------------------------------------------------------------------------------
+
+
+ NSTEP =    38000   TIME(PS) =      76.000  TEMP(K) =   331.84  PRESS =     0.0
+ Etot   =       -10.3149  EKtot   =        22.4203  EPtot      =       -32.7352
+ BOND   =         4.2942  ANGLE   =        38.5030  DIHED      =        20.4345
+ 1-4 NB =         3.1143  1-4 EEL =         0.6392  VDWAALS    =        -3.0503
+ EELEC  =       -64.3304  EGB     =       -32.3396  RESTRAINT  =         0.0000
+ ------------------------------------------------------------------------------
+
+
+ NSTEP =    38500   TIME(PS) =      77.000  TEMP(K) =   296.17  PRESS =     0.0
+ Etot   =       -15.0923  EKtot   =        20.0103  EPtot      =       -35.1026
+ BOND   =        11.9256  ANGLE   =        30.9684  DIHED      =        20.6233
+ 1-4 NB =         2.0035  1-4 EEL =        -3.6998  VDWAALS    =        -2.5492
+ EELEC  =       -63.9597  EGB     =       -30.4148  RESTRAINT  =         0.0000
+ ------------------------------------------------------------------------------
+
+
+ NSTEP =    39000   TIME(PS) =      78.000  TEMP(K) =   312.17  PRESS =     0.0
+ Etot   =       -15.8309  EKtot   =        21.0915  EPtot      =       -36.9224
+ BOND   =         5.4495  ANGLE   =        31.7288  DIHED      =        19.7074
+ 1-4 NB =         2.6360  1-4 EEL =         4.3720  VDWAALS    =        -1.7062
+ EELEC  =       -69.5770  EGB     =       -29.5330  RESTRAINT  =         0.0000
+ ------------------------------------------------------------------------------
+
+
+ NSTEP =    39500   TIME(PS) =      79.000  TEMP(K) =   279.76  PRESS =     0.0
+ Etot   =       -20.1189  EKtot   =        18.9021  EPtot      =       -39.0210
+ BOND   =         8.7923  ANGLE   =        30.5041  DIHED      =        17.8221
+ 1-4 NB =         2.9916  1-4 EEL =         1.5569  VDWAALS    =        -2.8908
+ EELEC  =       -66.0115  EGB     =       -31.7858  RESTRAINT  =         0.0000
+ ------------------------------------------------------------------------------
+
+
+ NSTEP =    40000   TIME(PS) =      80.000  TEMP(K) =   327.67  PRESS =     0.0
+ Etot   =       -11.4173  EKtot   =        22.1385  EPtot      =       -33.5559
+ BOND   =         8.8503  ANGLE   =        33.5695  DIHED      =        18.6878
+ 1-4 NB =         2.6631  1-4 EEL =         3.2236  VDWAALS    =        -2.3111
+ EELEC  =       -68.9113  EGB     =       -29.3277  RESTRAINT  =         0.0000
+ ------------------------------------------------------------------------------
+
+
+ NSTEP =    40500   TIME(PS) =      81.000  TEMP(K) =   399.28  PRESS =     0.0
+ Etot   =        -9.0653  EKtot   =        26.9771  EPtot      =       -36.0424
+ BOND   =         6.0914  ANGLE   =        31.6058  DIHED      =        22.5927
+ 1-4 NB =         1.6929  1-4 EEL =         0.6573  VDWAALS    =        -2.5197
+ EELEC  =       -64.5513  EGB     =       -31.6116  RESTRAINT  =         0.0000
+ ------------------------------------------------------------------------------
+
+
+ NSTEP =    41000   TIME(PS) =      82.000  TEMP(K) =   371.98  PRESS =     0.0
+ Etot   =       -16.8988  EKtot   =        25.1327  EPtot      =       -42.0314
+ BOND   =         2.4986  ANGLE   =        31.0244  DIHED      =        20.9577
+ 1-4 NB =         2.3638  1-4 EEL =         0.9981  VDWAALS    =        -3.2431
+ EELEC  =       -64.1129  EGB     =       -32.5180  RESTRAINT  =         0.0000
+ ------------------------------------------------------------------------------
+
+
+ NSTEP =    41500   TIME(PS) =      83.000  TEMP(K) =   286.27  PRESS =     0.0
+ Etot   =       -19.3360  EKtot   =        19.3414  EPtot      =       -38.6774
+ BOND   =         5.2085  ANGLE   =        27.3710  DIHED      =        22.9139
+ 1-4 NB =         4.1137  1-4 EEL =         3.2068  VDWAALS    =        -2.6738
+ EELEC  =       -67.3900  EGB     =       -31.4275  RESTRAINT  =         0.0000
+ ------------------------------------------------------------------------------
+
+
+ NSTEP =    42000   TIME(PS) =      84.000  TEMP(K) =   370.15  PRESS =     0.0
+ Etot   =       -10.5374  EKtot   =        25.0092  EPtot      =       -35.5467
+ BOND   =         3.2837  ANGLE   =        31.6245  DIHED      =        24.7676
+ 1-4 NB =         2.7595  1-4 EEL =         1.3611  VDWAALS    =        -2.8398
+ EELEC  =       -63.3664  EGB     =       -33.1369  RESTRAINT  =         0.0000
+ ------------------------------------------------------------------------------
+
+
+ NSTEP =    42500   TIME(PS) =      85.000  TEMP(K) =   296.21  PRESS =     0.0
+ Etot   =       -22.5986  EKtot   =        20.0132  EPtot      =       -42.6119
+ BOND   =         3.9980  ANGLE   =        29.1017  DIHED      =        19.3565
+ 1-4 NB =         1.9344  1-4 EEL =         2.3248  VDWAALS    =        -2.6514
+ EELEC  =       -68.5371  EGB     =       -28.1390  RESTRAINT  =         0.0000
+ ------------------------------------------------------------------------------
+
+
+ NSTEP =    43000   TIME(PS) =      86.000  TEMP(K) =   346.93  PRESS =     0.0
+ Etot   =       -13.5936  EKtot   =        23.4402  EPtot      =       -37.0338
+ BOND   =         5.0723  ANGLE   =        32.0351  DIHED      =        20.4711
+ 1-4 NB =         3.7965  1-4 EEL =         2.3810  VDWAALS    =        -2.6310
+ EELEC  =       -70.7818  EGB     =       -27.3770  RESTRAINT  =         0.0000
+ ------------------------------------------------------------------------------
+
+
+ NSTEP =    43500   TIME(PS) =      87.000  TEMP(K) =   331.58  PRESS =     0.0
+ Etot   =       -15.8934  EKtot   =        22.4030  EPtot      =       -38.2965
+ BOND   =         5.8670  ANGLE   =        30.8630  DIHED      =        21.5049
+ 1-4 NB =         1.7474  1-4 EEL =         4.5565  VDWAALS    =        -3.0144
+ EELEC  =       -71.7207  EGB     =       -28.1002  RESTRAINT  =         0.0000
+ ------------------------------------------------------------------------------
+
+
+ NSTEP =    44000   TIME(PS) =      88.000  TEMP(K) =   271.76  PRESS =     0.0
+ Etot   =       -24.1378  EKtot   =        18.3614  EPtot      =       -42.4992
+ BOND   =         4.1437  ANGLE   =        29.7930  DIHED      =        18.5442
+ 1-4 NB =         2.3215  1-4 EEL =         4.1343  VDWAALS    =        -2.9833
+ EELEC  =       -68.5865  EGB     =       -29.8661  RESTRAINT  =         0.0000
+ ------------------------------------------------------------------------------
+
+
+ NSTEP =    44500   TIME(PS) =      89.000  TEMP(K) =   302.02  PRESS =     0.0
+ Etot   =       -17.9120  EKtot   =        20.4058  EPtot      =       -38.3179
+ BOND   =         5.9501  ANGLE   =        31.2078  DIHED      =        19.9924
+ 1-4 NB =         2.6184  1-4 EEL =         3.6842  VDWAALS    =        -2.7620
+ EELEC  =       -72.5714  EGB     =       -26.4374  RESTRAINT  =         0.0000
+ ------------------------------------------------------------------------------
+
+
+ NSTEP =    45000   TIME(PS) =      90.000  TEMP(K) =   290.65  PRESS =     0.0
+ Etot   =       -19.6546  EKtot   =        19.6376  EPtot      =       -39.2922
+ BOND   =         4.3357  ANGLE   =        35.3031  DIHED      =        18.1645
+ 1-4 NB =         1.7695  1-4 EEL =        -0.0643  VDWAALS    =        -3.0570
+ EELEC  =       -68.3747  EGB     =       -27.3689  RESTRAINT  =         0.0000
+ ------------------------------------------------------------------------------
+
+
+ NSTEP =    45500   TIME(PS) =      91.000  TEMP(K) =   293.90  PRESS =     0.0
+ Etot   =       -23.3499  EKtot   =        19.8573  EPtot      =       -43.2071
+ BOND   =         3.8800  ANGLE   =        27.5244  DIHED      =        20.8396
+ 1-4 NB =         2.1700  1-4 EEL =         6.7890  VDWAALS    =        -2.3983
+ EELEC  =       -73.6076  EGB     =       -28.4042  RESTRAINT  =         0.0000
+ ------------------------------------------------------------------------------
+
+
+ NSTEP =    46000   TIME(PS) =      92.000  TEMP(K) =   292.02  PRESS =     0.0
+ Etot   =       -19.4418  EKtot   =        19.7302  EPtot      =       -39.1721
+ BOND   =         3.7166  ANGLE   =        33.5527  DIHED      =        19.8140
+ 1-4 NB =         1.8098  1-4 EEL =         6.5300  VDWAALS    =        -2.8994
+ EELEC  =       -73.1258  EGB     =       -28.5701  RESTRAINT  =         0.0000
+ ------------------------------------------------------------------------------
+
+
+ NSTEP =    46500   TIME(PS) =      93.000  TEMP(K) =   270.09  PRESS =     0.0
+ Etot   =       -21.8109  EKtot   =        18.2487  EPtot      =       -40.0596
+ BOND   =         4.8235  ANGLE   =        31.3320  DIHED      =        20.3179
+ 1-4 NB =         2.1050  1-4 EEL =         2.4294  VDWAALS    =        -3.0399
+ EELEC  =       -69.9500  EGB     =       -28.0777  RESTRAINT  =         0.0000
+ ------------------------------------------------------------------------------
+
+
+ NSTEP =    47000   TIME(PS) =      94.000  TEMP(K) =   300.83  PRESS =     0.0
+ Etot   =       -20.0654  EKtot   =        20.3252  EPtot      =       -40.3906
+ BOND   =         3.3826  ANGLE   =        32.7202  DIHED      =        20.0983
+ 1-4 NB =         2.1001  1-4 EEL =         3.0850  VDWAALS    =        -3.1446
+ EELEC  =       -72.1661  EGB     =       -26.4662  RESTRAINT  =         0.0000
+ ------------------------------------------------------------------------------
+
+
+ NSTEP =    47500   TIME(PS) =      95.000  TEMP(K) =   268.55  PRESS =     0.0
+ Etot   =       -24.0926  EKtot   =        18.1444  EPtot      =       -42.2370
+ BOND   =         1.4443  ANGLE   =        29.4708  DIHED      =        21.2176
+ 1-4 NB =         3.0415  1-4 EEL =         3.6224  VDWAALS    =        -2.9458
+ EELEC  =       -71.9999  EGB     =       -26.0877  RESTRAINT  =         0.0000
+ ------------------------------------------------------------------------------
+
+
+ NSTEP =    48000   TIME(PS) =      96.000  TEMP(K) =   260.28  PRESS =     0.0
+ Etot   =       -19.6383  EKtot   =        17.5859  EPtot      =       -37.2241
+ BOND   =         6.1447  ANGLE   =        32.5107  DIHED      =        20.7946
+ 1-4 NB =         2.6124  1-4 EEL =         3.8408  VDWAALS    =        -2.4407
+ EELEC  =       -74.0465  EGB     =       -26.6401  RESTRAINT  =         0.0000
+ ------------------------------------------------------------------------------
+
+
+ NSTEP =    48500   TIME(PS) =      97.000  TEMP(K) =   278.28  PRESS =     0.0
+ Etot   =       -19.9984  EKtot   =        18.8016  EPtot      =       -38.8000
+ BOND   =         3.0655  ANGLE   =        37.0371  DIHED      =        16.7189
+ 1-4 NB =         2.5191  1-4 EEL =        -0.7985  VDWAALS    =        -2.6891
+ EELEC  =       -67.0002  EGB     =       -27.6528  RESTRAINT  =         0.0000
+ ------------------------------------------------------------------------------
+
+
+ NSTEP =    49000   TIME(PS) =      98.000  TEMP(K) =   331.55  PRESS =     0.0
+ Etot   =       -11.3964  EKtot   =        22.4011  EPtot      =       -33.7975
+ BOND   =        11.3440  ANGLE   =        30.9641  DIHED      =        21.4217
+ 1-4 NB =         1.7279  1-4 EEL =         2.8947  VDWAALS    =        -3.2381
+ EELEC  =       -71.7601  EGB     =       -27.1517  RESTRAINT  =         0.0000
+ ------------------------------------------------------------------------------
+
+
+ NSTEP =    49500   TIME(PS) =      99.000  TEMP(K) =   256.96  PRESS =     0.0
+ Etot   =       -17.4288  EKtot   =        17.3617  EPtot      =       -34.7904
+ BOND   =         9.4897  ANGLE   =        35.9691  DIHED      =        19.1129
+ 1-4 NB =         1.9072  1-4 EEL =        -0.3045  VDWAALS    =        -3.0654
+ EELEC  =       -70.0517  EGB     =       -27.8479  RESTRAINT  =         0.0000
+ ------------------------------------------------------------------------------
+
+
+ NSTEP =    50000   TIME(PS) =     100.000  TEMP(K) =   303.57  PRESS =     0.0
+ Etot   =       -20.8926  EKtot   =        20.5103  EPtot      =       -41.4029
+ BOND   =         3.6016  ANGLE   =        28.2416  DIHED      =        20.2484
+ 1-4 NB =         2.2375  1-4 EEL =         4.3386  VDWAALS    =        -1.7565
+ EELEC  =       -70.9223  EGB     =       -27.3917  RESTRAINT  =         0.0000
+ ------------------------------------------------------------------------------
+
+
+      A V E R A G E S   O V E R     100 S T E P S
+
+
+ NSTEP =    50000   TIME(PS) =     100.000  TEMP(K) =   301.16  PRESS =     0.0
+ Etot   =       -18.6771  EKtot   =        20.3477  EPtot      =       -39.0249
+ BOND   =         4.9165  ANGLE   =        30.8424  DIHED      =        20.6087
+ 1-4 NB =         2.4827  1-4 EEL =         2.9140  VDWAALS    =        -2.6571
+ EELEC  =       -69.8198  EGB     =       -28.3123  RESTRAINT  =         0.0000
+ ------------------------------------------------------------------------------
+
+
+      R M S  F L U C T U A T I O N S
+
+
+ NSTEP =    50000   TIME(PS) =     100.000  TEMP(K) =    49.20  PRESS =     0.0
+ Etot   =         5.0357  EKtot   =         3.3240  EPtot      =         3.2231
+ BOND   =         2.0510  ANGLE   =         2.3510  DIHED      =         1.7111
+ 1-4 NB =         0.6951  1-4 EEL =         2.3438  VDWAALS    =         0.5124
+ EELEC  =         3.1719  EGB     =         2.0687  RESTRAINT  =         0.0000
+ ------------------------------------------------------------------------------
+
+--------------------------------------------------------------------------------
+   5.  TIMINGS
+--------------------------------------------------------------------------------
+
+|  NonSetup CPU Time in Major Routines:
+|
+|     Routine           Sec        %
+|     ------------------------------
+|     Nonbond           5.15   91.20
+|     Bond              0.00    0.00
+|     Angle             0.00    0.00
+|     Dihedral          0.00    0.00
+|     Shake             0.19    3.30
+|     RunMD             0.31    5.50
+|     Other             0.00    0.00
+|     ------------------------------
+|     Total             5.64
+
+|  Generalized Born CPU Time:
+|
+|     Routine                 Sec        %
+|     ------------------------------------
+|     Radii Calc              0.00    0.00
+|     Diagonal Calc           0.00    0.00
+|     Off Diagonal Calc       0.00    0.00
+|     GBSA LCPO Calc          0.00    0.00
+|     ---------------------------------
+|     Total                   0.00    0.00
+
+|  Final Performance Info:
+|     -----------------------------------------------------
+|     Average timings for last   50000 steps:
+|     Elapsed(s) =       5.64 Per Step(ms) =       0.11
+|         ns/day =    1530.85   seconds/ns =      56.44
+|
+|     Average timings for all steps:
+|     Elapsed(s) =       5.64 Per Step(ms) =       0.11
+|         ns/day =    1530.85   seconds/ns =      56.44
+|     -----------------------------------------------------
+
+|  Setup CPU time:            0.15 seconds
+|  NonSetup CPU time:         5.64 seconds
+|  Total CPU time:            5.79 seconds     0.00 hours
+
+|  Setup wall time:           1    seconds
+|  NonSetup wall time:        5    seconds
+|  Total wall time:           6    seconds     0.00 hours

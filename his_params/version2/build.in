@@ -1,0 +1,9 @@
+# Reads in the FF
+source /home/jackh/Software/amber_dev_gpu/dat/leap/cmd/leaprc.protein.ff14SB     # Load protein 
+
+set default PBradii mbondi3                             # Modifies GB radii to mbondi3 set, needed for IGB8 this is the version of the GB
+loadOff ../amber_toppar/phmd.lib                           # load modified library file, loads definitions for AS2 GL2 (ASPP AND GLUPP)
+phmdparm = loadamberparams ../amber_toppar/frcmod.phmd     # load modifications to bond length and dihedrals, and raises dihe barrier.
+his = sequence { ACE HIP  NHE }                     # Builds a blocked asp  ACE-ASP-NHE
+saveamberparm his his.parm7 his.rst7 # Outputs solvated parm and restart files
+quit

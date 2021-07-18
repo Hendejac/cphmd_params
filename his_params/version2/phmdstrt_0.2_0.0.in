@@ -1,0 +1,4 @@
+&phmdstrt
+              ph_theta = 0.2,0.0
+              vph_theta= 0.0,0.0
+             /
