@@ -1,0 +1,53 @@
+#!/usr/bin/tcsh
+#$ -S /bin/tcsh
+#$ -m e
+#$ -cwd
+#$ -V
+#$ -N peps_3of3
+#$ -o $JOB_ID.o
+#$ -e $JOB_ID.e
+#$ -j y
+#$ -l h_data=500M,h_rt=500:00:00
+#$ -pe ppn64 64
+#$ -R y
+
+### Prepare environment. Do not change.
+# Due to a bug in SGE qrsh will dump core if it exits immediately.
+limit coredumpsize 4
+limit cputime      unlimited
+limit filesize     unlimited
+limit datasize     unlimited
+limit stacksize    unlimited
+limit memoryuse    unlimited
+limit vmemoryuse   unlimited
+
+# This is environment dependent 
+set workdir = `pwd`
+
+# Make temp directory for work 
+mkdir /tmp/jackh/
+cp * /tmp/jackh/
+cd /tmp/jackh/
+
+### Job-specific parameter. Re-evaluate for every job.
+set cmdline = "/state/partition1/opt/charmm/parallel/c38b2-REPDSTR-parallel"
+
+### Implementation-specific parameter. Set this only once. OpenMPI
+### doesn't need a machine file, but requires --leave-session-attached
+set mpirun = "mpirun --leave-session-attached"
+
+### Submit job using mpirun. Do not change.
+foreach theta ( 1.2 1.4 1.5708 )
+	foreach thetx (0.0 0.2 0.4 0.6 0.7854 1.0 1.2 1.4 1.5708 )
+	sed "s/LOCALLAMB1/${theta}/g;s/LOCALLAMB2/${thetx}/g;" derive_potentials_template.inp > peps_${theta}_${thetx}.inp
+###	$mpirun -np 2 ~/software/backbone_fix_amber/amber_git_feb_2017/bin/pmemd.MPI -O -i template.mdin -c glu.rst7 -p glu_exclusions.parm7 -phmdin pep_${theta}_${thetx}.phmdin -phmdout glu.theta${theta}.thetx${thetx}.lamb -phmdrestrt glu_${theta}_${thetx}.phmdrst -o glu_${theta}_${thetx}.mdout -r glu_${theta}_${thetx}.rst -x glu_${theta}_${thetx}.nc &
+        $mpirun -np 2 $cmdline < peps_${theta}_${thetx}.inp >& peps_${theta}_${thetx}.out & 
+	end
+end
+
+wait
+### Clean up scratch
+mv * $workdir/
+rm -rf /tmp/jackh/
+
+exit

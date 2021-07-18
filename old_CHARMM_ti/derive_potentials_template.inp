@@ -1,0 +1,160 @@
+* PH-Rex Simulation : PDBNAME
+*
+
+set in = peps_alone
+set struct = @{in}
+set time = 1.000 ! time (ns)
+set exfrq = 500 ! output frequency 
+calc ntot = ( @time * 1000 ) / 0.002  !total steps
+
+! Derive model potential function parameters for CTA
+!----------------------------------------------------
+
+set barr = 0.0 
+set ph   = 4.0
+set temp = 300.0
+set conc = 0.15 ! concentration in (M)
+set phmdpar = phmd-pep_blank.in 
+set theta = LOCALLAMB1
+set thetx = LOCALLAMB2
+
+! Parameters
+! ----------
+
+set TOPPAR = /state/partition1/home/jackh/simulations/toppar    ! topology and parameters directory
+set HERE   = /state/partition1/home/jackh/simulations/pepstatin_stand_alone/pepstatin_titration_params
+set top    = @TOPPAR/prot/top_all22_prot.rtf
+set par    = @TOPPAR/prot/par_all22_prot.prm
+set topgen = @TOPPAR/c36/top_all36_cgenff.rtf
+set pargen = @TOPPAR/c36/par_all36_cgenff.prm
+set watstr = @TOPPAR/toppar_water_ions.str                      ! water
+set phstr  = @TOPPAR/toppar_phmd_c22.str                        ! PHMD parameters
+set peps   = @HERE/pepstatin.str 
+
+
+set gbradii = @TOPPAR/radius_gbsw.str
+
+! Read top and par files
+! ----------------------
+open read card unit 10 name @top
+read  rtf card unit 10
+close unit 10
+
+open read card unit 10 name @par
+read param card flex unit 10
+close unit 10
+
+open read card unit 10 name @topgen
+read rtf card unit 10 append
+close unit 10
+
+open read card unit 10 name @pargen
+read para card flex unit 10 append
+close unit 10
+
+
+! Read pepstatin input
+!----------------------
+stream @peps
+
+! Read PHMD input
+! -------------------
+stream @phstr
+
+! Read water top file
+! -------------------
+stream @watstr
+
+! Read psf/crd files
+! ----------------------
+
+open read form unit 15 name @struct.psf
+read psf  unit 15 card
+close unit 15
+
+open read form unit 15 name @struct.crd
+read coor card unit 15 
+close unit 15
+
+
+! Define selected groups
+! ----------------------------------
+define water sele resn TIP3 end
+define pep   sele resn CTP .and. .not. (water) show end 
+
+! estimate Tmass and Pmass from SYSmass (total system mass)
+! there could be problems with exreme values, such as  Pmass << SYSmass or Pmass >> SYSmass
+! NOT using this estimate anymore for SMALL system. (It would be too large) Added in 05/07/2015
+! For small systems, the default values are recommended (PMASS 500 and TMASS 1000)
+! For large systems, multiplied by a factor (such as 5 recommended by Rick) is suitable.
+! Ref : http://www.charmm.org/ubbthreads/ubbthreads.php?ubb=showflat&Number=8380
+! Note by Kevin: even multipied by 5, still can not work on 4FRS system.
+
+scalar mass stat
+!set Tmass = 5000
+!set Pmass = 2500
+calc Tmass = int ( ?stot / 5.0 )
+calc Pmass = int ( ?stot  /  50.0 )
+
+! Turn on faster options 
+! ------------------------
+faster on 
+shake bonh param
+
+! Setup Periodic Boundary Condition
+! ---------------------------------
+stream @struct.pbc
+CRYSTAL DEFINE @XTLtype @A @B @C @alpha @beta @gamma
+set imcut = 16.0
+set nbcut = 16.0 
+set nbcutoff = 12.0
+set nbcuton = 10.0
+crystal build cutoff @imcut
+
+! Turn-on Image Atoms
+!-------------------
+image byres xcen 0.0 ycen 0.0 zcen 0.0 select water end
+image byseg xcen 0.0 ycen 0.0 zcen 0.0 select pep end
+
+! Read gbsw radii
+!---------------------------
+stream @gbradii
+
+! 1. hybrid keyword in gb setup indicates hybrid phmd
+! 2 .selection tells gbsw which atoms to consider for calculation of born radii
+!---------------------------
+gbsw hybrid sgamma 0.0 nang 50 conc @conc -
+     sele pep end
+energy
+
+!GB radius check
+!----------------
+scalar wmain show
+
+! PHMD
+!--------
+open unit 23 read form name @phmdpar
+open unit 25 write form name @{in}.ph-@{ph}.theta@{theta}_thetx@{thetx}.lambda
+phmd par 23 wri 25 ph @ph npri @exfrq -
+     barr @barr temp @temp deri  
+
+phtest num 1 set @theta
+phtest num 2 set @thetx
+
+! Dynamics
+!---------------
+open write unit 12 form name @{in}_test.rst 
+open write unit 13 unform name @{in}_test.dcd 
+open write unit 14 form name @{in}_test.ene 
+
+DYNA LEAP CPT START time 0.002 nstep @ntot -
+     nprint @exfrq iprfrq 1000 ntrfrq @exfrq -
+     iunread -1 iunwri 12 iuncrd 13 iunvel -1 kunit 14 -
+     nsavc @exfrq nsavv 0 isvfrq 1000 -
+     echeck 100 - 
+     firstt @temp finalt @temp tstruc @temp -
+     twindl -10.0 twindh 10.0 -
+     pconstant pmass @pmass pref 1.0 pgamma 20.0 tbath @temp -
+     hoover reft @temp tmass @tmass
+
+STOP

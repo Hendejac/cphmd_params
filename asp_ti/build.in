@@ -1,0 +1,13 @@
+# Reads in the FF
+source /state/partition1/home/jana/software/amber_dev_hybrid/dat/leap/cmd/leaprc.protein.ff14SB     # Load protein 
+source /state/partition1/home/jana/software/amber_dev_hybrid/dat/leap/cmd/leaprc.water.tip3p        # Load pre-equilibrated water
+
+set default PBradii mbondi3                             # Modifies GB radii to mbondi3 set, needed for IGB8 this is the version of the GB
+loadOff /state/partition1/home/jana/simulation/amber_toppar/phmd.lib                           # load modified library file, loads definitions for AS2 GL2 (ASPP AND GLUPP)
+phmdparm = loadamberparams /state/partition1/home/jana/simulation/amber_toppar/frcmod.phmd     # load modifications to bond length and dihedrals, and raises dihe barrier.
+asp = sequence { ACE AS2  NHE }                     # Builds a blocked asp  ACE-ASP-NHE
+saveamberparm asp solute.parm7 temp.rst7           # generates the parameter files and coords file
+solvateoct asp TIP3PBOX 12.0                       # solvate the molecule in an octahedral water box with a cushion of 12 Ang. 
+#addions asp Cl-                            # Add ions, in this case no ions are added.
+saveamberparm asp asp.parm7 asp.rst7 # Outputs solvated parm and restart files
+quit
