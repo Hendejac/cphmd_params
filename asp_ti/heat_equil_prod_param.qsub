@@ -1,0 +1,317 @@
+#$ -S /bin/bash
+#$ -cwd
+#$ -V
+#$ -o $JOB_ID.o
+#$ -j y
+#$ -N asp.1ns.ti 
+#$ -l h_data=500M,h_rt=996:00:00
+#$ -pe ppn64 64
+#$ -R y
+
+########################################################
+#  Important information                               #
+########################################################
+
+amberdir="/state/partition1/home/rharris/software/amber_dev_hybrid"
+toppar="/state/partition1/home/jana/simulation/amber_toppar"
+robertScript="/state/partition1/home/rharris/projects/amber_phmd/scripts"
+phmdpar="/state/partition1/home/jana/simulation/amber_toppar"
+
+# Standard Variables 
+protein="asp"    # Name 
+conc=0.15        # Salt Concentration, Implicent Salt Concentration 
+exions=0
+stemp=50         # Start temp for heating 
+etemp=300        # End temp for heating 
+itemp=50         # Temp to incrment the heating by 
+crysph=7.0       # Starting pH, can come from cyrstal structure for protein 
+
+cutoff=8.0       # Nonbond cutoff small system 9.0 ang, otherwise use 12.0 ang.
+
+restraints=(5.0 1.0 0.5)   # Restraints for equilibration 
+
+ncores=8         # number of cores to use
+nprocesses=$(($NSLOTS/$ncores))
+
+####################
+# Heating Specific #
+####################
+
+hnsteps=25000    # 25000
+hwfrq=250        # How often to write ene. vel. temp. and lamb.
+hwrst=1000       # How often to write restart files
+hts=0.002        # time step
+
+##########################
+# Equilibration Specific #
+##########################
+
+ensteps=50000    # 50000
+ewfrq=250
+ewrst=10000
+ets=0.002
+
+#######################
+# Production Specific #
+#######################
+
+pnsteps=2500000    # 1000000
+pwfrq=250
+pwrst=10000
+pts=0.002
+
+# Parameter arrays #---------------------------------
+arrthet=(0.0 0.2 0.4 0.6 0.7854 1.0 1.2 1.4 1.5708) #
+#----------------------------------------------------
+
+#########################################################################################################
+
+job="heating_equil_prod"
+user="jackh"
+
+# This is environment dependent 
+workdir=`pwd`
+
+## Job-specific parameter. Re-evaluate for every job.
+
+mkdir -p /tmp/$user
+mkdir -p /tmp/$user/$job 
+
+rsync -r $workdir/* /tmp/$user/$job 
+
+cd /tmp/$user/$job
+
+###########
+# Heating #
+###########
+
+nres=$( grep "FLAG POINTERS" -A 3 solute.parm7 | tail -n 1 | awk '{print $2}' )
+
+echo "heating
+&cntrl
+  imin = 0, nstlim = $hnsteps, dt = $hts,                         ! Don't Minimize, Number of steps, time step
+  irest = 0, ntx = 1, ig = -1,                                    ! Read vel. (1 = input, 0 = no restart), (1 = start from min, 2 = start from md), random number seed 
+  tempi = $stemp, temp0 = $etemp,                                 ! Initial temp., Target Temp. 
+  ntc = 2, ntf = 2, tol = 0.00001,                                ! Shake (2 = bonds involving hydrogen), Force Eval. 
+  ntwx = $hwfrq, ntwe = $hwfrq, ntwr = $hwrst, ntpr = $hwfrq      ! Print info 
+  cut=$cutoff, iwrap=0,                                           ! cutoff, no wrap
+  ntt = 3, gamma_ln = 1.0, ntb = 1, ntp = 0,                      ! Choose temp. control (3 = langevin), Collision Frq,
+  nscm = 0,                                                       ! Remove center of mass motion every nscm steps      
+  ntr = 1, restraintmask = ':1-$nres&!@H=', restraint_wt = 100.0, ! All restraint options                    
+  iphmd = 2, solvph = $crysph, saltcon = $conc,                   ! 2 = hybrid, pH, Implicent salt concentration
+  nmropt = 1,                                                     ! Change thermostat with time 
+  ioutfm = 1, ntxo = 2,                                           ! Output type 
+ /
+ &wt
+   TYPE=\"TEMP0\", istep1 = 0, istep2 = $hnsteps,                 ! This section modulates the heatup rate 
+   value1=$stemp, value2=$etemp,
+/
+&wt
+  TYPE=\"END\",
+/" > heating.mdin
+
+
+for theta in ${arrthet[@]}
+do
+  if [[ $protein = "lys" || $protein = "arg" || $protein = "cys" ]]
+  then 
+  echo "&phmdstrt
+         ph_theta = $theta
+         vph_theta = 0.0
+  /" > phmdstrt_${theta}.in
+  elif [[ $protein = "asp" || $protein = "glu" ]]
+  then
+    for thetx in ${arrthet[@]}
+    do 
+    echo "&phmdstrt
+            ph_theta = $theta,$thetx
+            vph_theta = 0.0,0.0
+         /" > phmdstrt_${theta}_${thetx}.in 
+    done
+  fi
+done 
+
+### Implementation-specific parameter. Set this only once. OpenMPI
+### doesn't need a machine file, but requires --leave-session-attached
+mpirun="mpirun --leave-session-attached"
+
+### Submit job using mpirun. Do not change.
+# ~~~ NOTE: The input_hybrid.parm files will need to be added to a centeral repository 
+#           Possibly remove of the center of mass motions 
+
+count=0
+for theta in ${arrthet[@]}
+do 
+  if [[ $protein = "lys" || $protein = "arg" || $protein = "cys" ]]
+  then 
+  count=$((count+1))
+   $mpirun -np $ncores $amberdir/bin/pmemd.MPI -O -i heating.mdin -c mini.rst7 -p ${protein}.parm7 -ref mini.rst7 -phmdparm $phmdpar/input_hybrid.parm -phmdout heating_${theta}.lambda -phmdstrt phmdstrt_${theta}.in -o heating_${theta}.mdout -r heating_${theta}.rst7 &
+  if [ $count == $nprocesses ]
+  then 
+  wait 
+  count=0 
+  fi
+  elif [[ $protein = "asp" || $protein = "glu" ]]
+  then 
+    for thetx in ${arrthet[@]}
+     do
+
+        count=$((count+1))
+        
+        if [ $j == 1 ]
+        then 
+         restartcoor=mini.rst7
+        else
+         prev=$(($j-1)) 
+         restartcoor=heat${prev}_${theta}_${thetx}.rst7 
+        fi 
+        
+        $mpirun -np $ncores $amberdir/bin/pmemd.MPI -O -i heating.mdin -c mini.rst7 -p ${protein}.parm7 -ref mini.rst7 -phmdparm $phmdpar/input_hybrid.parm -phmdout heating_${theta}_${thetx}.lambda -phmdstrt phmdstrt_${theta}_${thetx}.in -o heating_${theta}_${thetx}.mdout -r heating_${theta}_${thetx}.rst7 &
+        
+        if [ $count == $nprocesses ] 
+        then 
+        wait 
+        count=0
+        fi
+    done
+  fi
+done
+wait
+
+cp /tmp/$user/$job/heat*.rst7   $workdir 
+cp /tmp/$user/$job/heat*.mdout  $workdir
+cp /tmp/$user/$job/heat*.nc     $workdir 
+
+
+#################
+# Equilibration #
+#################
+
+
+for restn in `seq 1 ${#restraints[@]}` # loop over number of restarts
+do
+echo "Stage 1 equilibration of asp
+         &cntrl
+          imin = 0, nstlim = $ensteps, dt = $ets,
+          irest = 1, ntx = 5,ig = -1,
+          temp0 = $etemp,
+          ntc = 2, ntf = 2, tol = 0.00001
+          ntwx = $ewfrq, ntwe = 0, ntwr = $ewrst, ntpr = $ewfrq
+          cut = $cutoff, iwrap = 0, taup = 0.1
+          ntt = 3, gamma_ln = 1.0, ntb = 2, ntp = 1,              ! ntp (1 = isotropic position scaling)
+          iphmd = 2, solvph = $crysph, saltcon = $conc,
+          nscm = 0,
+          ntr = 1, restraintmask = ':1-${nres}&!@H=', restraint_wt = ${restraints[$(($restn-1))]},
+          ioutfm = 1, ntxo = 2,
+        /" > equil${restn}.mdin
+
+  for theta in ${arrthet[@]}
+  do
+  if [[ $protein = "lys" || $protein = "arg" || $protein = "cys" ]]
+    then
+    
+    count=$((count+1))
+    
+    if [ $restn == 1 ] 
+      then 
+          equilrestart="heating_${theta}.rst7"
+      else 
+          prev=$(($restn-1))
+          equilrestart="equil${prev}_${theta}.rst7"
+    fi
+
+    $mpirun -np $ncores $amberdir/bin/pmemd.MPI -O -i equil${restn}.mdin -c $equilrestart -p ${protein}.parm7 -ref mini.rst7 -phmdparm $phmdpar/input_hybrid.parm -phmdout equil${restn}.lambda -phmdstrt phmdstrt_${theta}.in -o equil${restn}_${theta}.mdout -r equil${restn}_${theta}.rst7    
+
+    if [ $count == $nprocesses ]
+      then
+      wait
+      count=0
+    fi
+   elif [[ $protein = "asp" || $protein = "glu" ]]
+      then 
+
+      for thetx in ${arrthet[@]}
+      do
+
+        count=$((count+1))
+          
+        if [ $restn == 1 ] 
+          then 
+          equilrestart="heating_${theta}_${thetx}.rst7"
+        else 
+          prev=$(($restn-1))
+          equilrestart="equil${prev}_${theta}_${thetx}.rst7"
+        fi
+      
+        $mpirun -np $ncores $amberdir/bin/pmemd.MPI -O -i equil${restn}.mdin -c $equilrestart -p ${protein}.parm7 -ref mini.rst7 -phmdparm $phmdpar/input_hybrid.parm -phmdout equil${restn}_${theta}_${thetx}.lambda -phmdstrt phmdstrt_${theta}_${thetx}.in -o equil${restn}_${theta}_${thetx}.mdout -r equil${restn}_${theta}_${thetx}.rst7
+       
+        if [ $count == $nprocesses ] 
+          then 
+          wait 
+          count=0
+        fi
+    done
+   fi
+  done 
+done
+wait
+
+cp /tmp/$user/$job/equil*.rst7   $workdir 
+cp /tmp/$user/$job/equil*.mdout  $workdir
+cp /tmp/$user/$job/equil*.nc     $workdir 
+
+##############
+# Production #
+##############
+
+echo "Production of $protein
+ &cntrl
+  imin=0, nstlim=$pnsteps, dt=$pts, 
+  irest=1, ntx=5, ig=-1, 
+  tempi=$etemp, temp0=$etemp, 
+  ntc=2, ntf=2, tol = 0.00001,
+  ntwx=$pwfrq, ntwe=$pwfrq, ntwr=$pwrst, ntpr=$pwfrq, 
+  cut=$cutoff, iwrap=0, 
+  ntt=3, gamma_ln=1.0, ntb=2, ntp=1,
+  iphmd=2, solvph=$crysph, saltcon=$conc,
+/" > prod.mdin
+
+
+for theta in ${arrthet[@]}
+do
+ if [[ $protein = "lys" || $protein = "arg" || $protein = "cys" ]]
+   then 
+    
+   $mpirun -np $ncores $amberdir/bin/pmemd.MPI -O -i prod.mdin -c equil${#restraints[@]}_${theta}.rst7 -p ${protein}.parm7 -phmdparm $phmdpar/input_hybrid.parm -phmdout prod_${theta}.lambda -phmdstrt phmdstrt_${theta}.in -o prod_${theta}.mdout -r prod_${theta}.rst7 -x prod_${theta}.nc &
+  
+   if [ $count == $nprocesses ]
+    then
+    wait
+    count=0
+   fi
+
+ elif [[ $protein = "asp" || $protein = "glu" ]]
+  then 
+  for thetx in ${arrthet[@]}
+  do
+    count=$((count+1))
+
+   $mpirun -np $ncores $amberdir/bin/pmemd.MPI -O -i prod.mdin -c equil${#restraints[@]}_${theta}_${thetx}.rst7 -p ${protein}.parm7 -phmdparm $phmdpar/input_hybrid.parm -phmdout prod_${theta}_${thetx}.lambda -phmdstrt phmdstrt_${theta}_${thetx}.in -o prod_${theta}_${thetx}.mdout -r prod_${theta}_${thetx}.rst7 -x prod_${theta}_${thetx}.nc &
+
+    if [ $count == $nprocesses ]
+      then
+      wait
+      count=0
+    fi
+  done
+ fi
+done
+wait
+
+cp /tmp/$user/$job/prod*.mdout  $workdir
+cp /tmp/$user/$job/prod*.lambda $workdir
+cp /tmp/$user/$job/prod*.nc     $workdir
+
+rm -r /tmp/$user/$job
+exit 
+
